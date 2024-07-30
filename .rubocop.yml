@@ -1,0 +1,99 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-minitest
+
+AllCops:
+  TargetRubyVersion: 2.7
+  TargetRailsVersion: 6.0
+  Exclude:
+    - 'node_modules/**/*'
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+  IndentationWidth: 2
+
+Layout/HashAlignment:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: 111 # TODO: discuss and set this
+
+Rails:
+  Enabled: true
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+# Don't enforce documentation
+Style/Documentation:
+  Enabled: false
+
+# Don't enforce frozen string literals
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Support both ruby19 and hash_rockets
+Style/HashSyntax:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  EnforcedStyle: template
+
+Style/StringConcatenation:
+  Exclude:
+    - app/models/concerns/fog_extensions/opennebula/flavor.rb
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/RescuedExceptionsVariableName:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Rails/Blank:
+  Enabled: false
+
+Rails/RakeEnvironment:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/IndexWith:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false

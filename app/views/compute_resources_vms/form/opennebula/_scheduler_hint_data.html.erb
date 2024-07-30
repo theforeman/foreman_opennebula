@@ -1,0 +1,13 @@
+<%- scheduler_hint_filter ||= @host.compute_attributes[:scheduler_hint_filter] %>
+<%- disabled ||= false %>
+<%= fields_for "#{type}[compute_attributes]", @host.compute_object do |f| %>
+  <%- if scheduler_hint_filter == 'Cluster' %>
+    <%= select_f f, :scheduler_hint_data, @host.compute_resource.available_clusters, :id, :name,
+          { :include_blank => true }, :label => _("Deploy to cluster"), :disabled => disabled %>
+  <%- elsif scheduler_hint_filter == 'Host' %>
+    <%= select_f f, :scheduler_hint_data, @host.compute_resource.available_hosts, :id, :name,
+          { :include_blank => true }, :label => _("Deploy to host"), :disabled => disabled %>
+  <%- else %>
+    <%= text_f f, :scheduler_hint_data, :label => _("Scheduler hint data"), :disabled => disabled %>
+  <%- end %>
+<%- end %>

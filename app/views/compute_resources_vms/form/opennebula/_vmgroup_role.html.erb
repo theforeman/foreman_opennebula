@@ -1,0 +1,6 @@
+<%- vmgroup_id ||= @host.compute_attributes[:vmgroup_id] %>
+<%- disabled ||= false %>
+<%= fields_for "#{type}[compute_attributes]", @host.compute_object do |f| %>
+  <%= selectable_f f, :vmgroup_role, @host.compute_resource.available_roles(vmgroup_id),
+        { :include_blank => true }, :label => _("Role"), :disabled => disabled %>
+<%- end %>

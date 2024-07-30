@@ -1,0 +1,47 @@
+<% title @vm.name %>
+<div class='col-md-12'>
+  <table class="<%= table_css_classes %>">
+    <thead>
+      <tr><th colspan="2"><%= _('Properties') %></th></tr>
+    </thead>
+    <tbody>
+      <%= prop :cpu, 'CPU' %>
+      <%= prop :vcpu, 'VCPU' %>
+      <tr>
+        <td><%= _('Memory') %></td>
+        <td><%= number_to_human_size(@vm.memory.to_i.megabytes) %></td>
+      </tr>
+      <% @vm.disks.each do |disk| %>
+      <tr>
+        <td><%= _("Disk %s") % disk.target %></td>
+        <td><%= "#{disk.image} / #{number_to_human_size(disk.size.to_i.megabytes)}" %></td>
+      </tr>
+      <% end %>
+      <% @vm.interfaces.each do |iface| %>
+      <tr>
+        <td><%= _("Nic %s") % iface.nic_id %></td>
+        <td><%= "#{iface.network} / #{iface.mac}" %></td>
+      </tr>
+      <% end %>
+      <% if @vm.vmgroup_id.present? %>
+      <tr>
+        <td><%= _("VM Group") %></td>
+        <td><%= @compute_resource.available_vmgroups.detect { |vmgroup| vmgroup.id == @vm.vmgroup_id.to_i }.name %></td>
+      </tr>
+      <tr>
+        <td><%= _("Role") %></td>
+        <td><%= @vm.vmgroup_role %></td>
+      </tr>
+      <% end %>
+      <% if @vm.host.present? %>
+      <tr>
+        <td><%= _("Cluster") %></td>
+        <td><%= @compute_resource.available_hosts.detect { |host| host.name == @vm.host }.to_hash['HOST']['CLUSTER'] %></td>
+      </tr>
+      <%= prop :host %>
+      <% end %>
+      <%= prop :state, 'LCM State' %>
+      <%= prop :sched_message if @vm.sched_message %>
+    </tbody>
+  </table>
+</div>

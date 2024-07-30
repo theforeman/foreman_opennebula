@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[foreman.foreman_opennebula]
+file_filter = locale/<lang>/foreman_opennebula.edit.po
+source_file = locale/foreman_opennebula.pot
+source_lang = en
+type = PO

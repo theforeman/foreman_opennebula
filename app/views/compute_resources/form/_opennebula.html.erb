@@ -1,0 +1,6 @@
+<%= text_f f, :url, :label => _("URL"), :size => "col-md-8", :help_block => _("e.g. http://host.example.com:2633/RPC2") %>
+<%= text_f f, :user, :label => _("User") %>
+<%= password_f f, :password, :label => _("Password"), :unset => unset_password? %>
+<div class="col-md-offset-2">
+  <%= test_connection_button_f(f, (f.object.flavors rescue false)) %>
+</div>

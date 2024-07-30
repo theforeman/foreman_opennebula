@@ -1,0 +1,85 @@
+<% unless new_vm %>
+  <% if host.compute_object.ready? %>
+    <%= alert(:header => _('Warning'),
+              :class  => 'alert-warning',
+              :text   => _('Editing VM parameters causes it to reboot.')) %>
+  <% end %>
+  <%= alert(:header => _('Notice'),
+            :class  => 'alert-info',
+            :text   => _('Disk size can only be increased.')) %>
+  <% disabled = true %>
+<% else %>
+  <% disabled = false %>
+<% end %>
+
+<%= select_f f, :template_id, compute_resource.available_flavors, :id, :name, {},
+      :label    => _('Template'),
+      :disabled => disabled %>
+
+<%= counter_f f, :cpu,
+      :label       => _('CPU'),
+      :min         => 0.01,
+      :help_inline => _('Default from template') %>
+
+<%= counter_f f, :vcpu,
+      :label       => _('VCPU'),
+      :min         => 1,
+      :help_inline => _('Default from template') %>
+
+<%= megabyte_size_f f, :memory,
+      :label       => _('Memory'),
+      :help_inline => _('Default from template') %>
+
+<%= megabyte_size_f f, :disk_size,
+      :label       => _('Disk'),
+      :help_inline => _('Default from template') %>
+
+<% unless controller_name == 'compute_attributes' %>
+  <%= select_f f, :vmgroup_id, compute_resource.available_vmgroups, :id, :name, { :include_blank => true },
+        :label       => _('VM Group'),
+        :help_inline => _('Optional'),
+        :'data-url'  => url_for(controller: 'foreman_opennebula/hosts', action: 'vmgroup_selected'),
+        :onchange    => 'vmgroupSelected(this);',
+        :disabled    => disabled %>
+
+  <div id='vmgroup_role_wrapper'>
+  <% if host.compute_object.vmgroup_id.present? %>
+    <%= render :partial => 'compute_resources_vms/form/opennebula/vmgroup_role', :locals => {
+          :vmgroup_id => host.compute_object.vmgroup_id,
+          :disabled   => disabled
+        } %>
+  <% end %>
+  </div>
+
+  <%= selectable_f f, :scheduler_hint_filter, compute_resource.possible_scheduler_hints, { :include_blank => true },
+        :label                             => _('Scheduler hint filter'),
+        :'data-url'                        => url_for(controller: 'foreman_opennebula/hosts',
+                                                      action: 'scheduler_hint_filter_selected'),
+        :'data-minimum-results-for-search' => 'Infinity',
+        :onchange                          => 'schedulerHintFilterSelected(this);',
+        :help_inline                       => _('Optional'),
+        :disabled                          => disabled %>
+
+  <div id='scheduler_hint_data_wrapper'>
+  <% if host.compute_object.scheduler_hint_filter.present? %>
+    <%= render :partial => 'compute_resources_vms/form/opennebula/scheduler_hint_data', :locals => {
+          :scheduler_hint_filter => host.compute_object.scheduler_hint_filter,
+          :disabled              => disabled
+        } %>
+  <% end %>
+  </div>
+
+  <%-
+      arch ||= nil ; os ||= nil
+      images = possible_images(compute_resource, arch, os)
+  -%>
+  <div id='image_selection'>
+    <%= select_f f, :image_id, images, :uuid, :name, {
+          :include_blank => (images.empty? || images.size == 1) ? false : _('Please select an image') },
+          :disabled      => images.empty? || (params[:host] && params[:host][:provision_method] == 'build'),
+          :label         => _('Image') %>
+  </div>
+
+  <%= javascript_include_tag 'foreman_opennebula/vmgroup_selected' %>
+  <%= javascript_include_tag 'foreman_opennebula/scheduler_hint_filter_selected' %>
+<% end %>
