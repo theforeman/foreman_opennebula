@@ -207,7 +207,18 @@ module ForemanOpennebula
       associate_by('mac', vm.interfaces.map(&:mac))
     end
 
+    def host_interfaces_attrs(host)
+      setup_nics_attrs(host)
+      super
+    end
+
     private
+
+    def setup_nics_attrs(host)
+      host.interfaces.each do |nic|
+        nic.compute_attributes['vnet'] = nic.subnet&.opennebula_vnet.to_s
+      end
+    end
 
     def client
       @client ||= Fog::Compute.new(

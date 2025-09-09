@@ -1,0 +1,4 @@
+<!-- insert_after ':root:last-child' -->
+
+<%= select_f f, :opennebula_vnet, ForemanOpennebula::Opennebula.first.available_networks, :id, :name, { include_blank: true },
+:label => _("OpenNebula Virtual Network"), :help_inline => _("Reference at OpenNebula Virtual Network object") %>

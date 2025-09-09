@@ -18,6 +18,14 @@ module ForemanOpennebula
         requires_foreman '>= 3.7'
         compute_resource ForemanOpennebula::Opennebula
         register_global_js_file 'global'
+
+        parameter_filter Subnet, :opennebula_vnet
+      end
+    end
+
+    initializer 'foreman_opennebula.load_app_instance_data' do |app|
+      ForemanOpennebula::Engine.paths['db/migrate'].existent.each do |path|
+        app.config.paths['db/migrate'] << path
       end
     end
 
@@ -25,16 +33,14 @@ module ForemanOpennebula
       require 'fog/opennebula/models/compute/server'
       require 'fog/opennebula/models/compute/flavor'
       require 'fog/opennebula/models/compute/interface'
-      require File.expand_path('../../app/models/concerns/fog_extensions/opennebula/server', __dir__)
-      require File.expand_path('../../app/models/concerns/fog_extensions/opennebula/flavor', __dir__)
-      require File.expand_path('../../app/models/concerns/fog_extensions/opennebula/interface', __dir__)
-      require File.expand_path('../../app/helpers/concerns/foreman_opennebula/hosts_helper_extensions', __dir__)
+      require File.expand_path('../../app/models/concerns/fog_extensions/open_nebula/server', __dir__)
+      require File.expand_path('../../app/models/concerns/fog_extensions/open_nebula/flavor', __dir__)
+      require File.expand_path('../../app/models/concerns/fog_extensions/open_nebula/interface', __dir__)
       require File.expand_path('../../app/helpers/concerns/foreman_opennebula/form_helper_extensions', __dir__)
 
       ::Fog::Compute::OpenNebula::Server.include(FogExtensions::OpenNebula::Server)
       ::Fog::Compute::OpenNebula::Flavor.include(FogExtensions::OpenNebula::Flavor)
       ::Fog::Compute::OpenNebula::Interface.include(FogExtensions::OpenNebula::Interface)
-      ::HostsHelper.include(ForemanOpennebula::HostsHelperExtensions)
       # ::FormHelper.include(ForemanOpennebula::FormHelperExtensions)
       ::ActionView::Base.include(ForemanOpennebula::FormHelperExtensions)
     rescue => e
