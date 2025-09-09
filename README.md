@@ -9,11 +9,11 @@ for how to install Foreman plugins
 
 1. Apply the DB migrations.
 2. Create a compute resource.
-3. For every Foreman subnet select a corresponding OpenNebula network.
+3. Select corresponding OpenNebula network on the Foreman Subnet configuration page.
 
 ## Copyright
 
-Copyright (c) 2024 IVI.RU LLC
+Copyright (c) 2025 IVI.RU LLC
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

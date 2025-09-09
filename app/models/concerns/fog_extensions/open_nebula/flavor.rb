@@ -9,6 +9,7 @@ module FogExtensions
         attribute :pci
         attribute :vmgroup
         attribute :template_id
+        attribute :topology
 
         # rubocop:disable Style/StringConcatenation
         def to_s
@@ -30,7 +31,8 @@ module FogExtensions
             + get_cpu_model \
             + get_nic_default \
             + get_vmgroup \
-            + get_template_id
+            + get_template_id \
+            + get_topology
         end
         # rubocop:enable Style/StringConcatenation
 
@@ -100,6 +102,16 @@ module FogExtensions
           else
             ret = "PCI=#{attributes[:pci]}\n"
           end
+          ret.tr!('{', '[')
+          ret.tr!('}', ']')
+          ret.delete!('>')
+          ret
+        end
+
+        def get_topology
+          return '' unless attributes[:topology]
+
+          ret = "TOPOLOGY=#{attributes[:topology]}\n"
           ret.tr!('{', '[')
           ret.tr!('}', ']')
           ret.delete!('>')
