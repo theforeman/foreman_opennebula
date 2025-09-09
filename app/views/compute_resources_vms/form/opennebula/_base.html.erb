@@ -83,3 +83,23 @@
   <%= javascript_include_tag 'foreman_opennebula/vmgroup_selected' %>
   <%= javascript_include_tag 'foreman_opennebula/scheduler_hint_filter_selected' %>
 <% end %>
+
+<div class="row">
+  <%= label_tag(:user_template, _("Custom attributes"), :class => 'col-md-2 control-label') %>
+  <div class="col-md-4">
+    <table id="opennebula_custom_attributes" class="<%= table_css_classes %>">
+      <tbody>
+        <%= f.fields_for :user_template, f.object.user_template do |fields| %>
+          <%= render "compute_resources_vms/form/opennebula/custom_attribute", f: fields, new_vm: new_vm %>
+        <% end %>
+      </tbody>
+    </table>
+    <% if new_vm %>
+      <%= link_to_add_fields(_("Add attribute"), f, :user_template, "compute_resources_vms/form/opennebula/custom_attribute", {
+        :target => '#opennebula_custom_attributes tbody',
+        :class  => 'w-100',
+        :object => [OpenStruct.new({:name => '', :value => ''})],
+        :locals => { new_vm: new_vm } }) %>
+    <% end %>
+  </div>
+</div>

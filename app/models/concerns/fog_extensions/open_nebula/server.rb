@@ -4,8 +4,8 @@ module FogExtensions
       extend ActiveSupport::Concern
       include ActionView::Helpers::NumberHelper
 
-      attr_writer :template_id, :image_id, :disk_size, :vmgroup_id,
-        :vmgroup_role, :scheduler_hint_filter, :scheduler_hint_data
+      attr_writer :template_id, :image_id, :disk_size, :vmgroup_id, :vmgroup_role,
+        :user_template_attributes, :scheduler_hint_filter, :scheduler_hint_data
 
       included do
         def cpu
@@ -47,8 +47,19 @@ module FogExtensions
         onevm_object.present? ? onevm_object['TEMPLATE/VMGROUP/ROLE'] : @vmgroup_role
       end
 
+      def user_template
+        return if onevm_object.nil?
+        standard_attributes = %w[SCHED_DS_REQUIREMENTS SCHED_RANK SCHED_REQUIREMENTS]
+        user_attributes = onevm_object.to_hash['VM']['USER_TEMPLATE'].filter do |name, _|
+          !standard_attributes.include?(name)
+        end
+        user_attributes.map do |name, value|
+          OpenStruct.new({:name => name, :value => value})
+        end
+      end
+
       def sched_requirements
-        return unless onevm_object
+        return if onevm_object.nil?
         onevm_object['USER_TEMPLATE/SCHED_REQUIREMENTS']
       end
 

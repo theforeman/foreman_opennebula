@@ -116,6 +116,15 @@ module ForemanOpennebula
         vm_attrs[:flavor].vmgroup = { 'VMGROUP_ID' => args[:vmgroup_id], 'ROLE' => args[:vmgroup_role] }
       end
 
+      if args[:user_template_attributes].present?
+        user_template_attributes = args[:user_template_attributes].values.filter do |attribute|
+          attribute[:name].present? && attribute[:_delete].empty?
+        end
+        vm_attrs[:flavor].user_variables = user_template_attributes.reduce({}) do |user_variables, attribute|
+          user_variables.merge({attribute[:name] => attribute[:value]})
+        end
+      end
+
       if args['provision_method'] == 'image' && args['image_id'].present?
         [vm_attrs[:flavor].disk].flatten.compact.first.delete('IMAGE')
         [vm_attrs[:flavor].disk].flatten.compact.first['IMAGE_ID'] = args[:image_id]
