@@ -19,10 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rdoc', '~> 6.4'
-  spec.add_development_dependency 'rubocop', '~> 1.36'
-  spec.add_development_dependency 'rubocop-minitest'
-  spec.add_development_dependency 'rubocop-performance'
-  spec.add_development_dependency 'rubocop-rails'
+  spec.add_development_dependency 'theforeman-rubocop', '~> 0.1.2'
 
   spec.add_runtime_dependency 'fog-opennebula', '~> 0.0'
   spec.add_dependency 'deface'
