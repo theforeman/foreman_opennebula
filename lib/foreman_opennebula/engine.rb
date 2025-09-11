@@ -13,13 +13,15 @@ module ForemanOpennebula
       Foreman::Gettext::Support.add_text_domain locale_domain, locale_dir
     end
 
-    initializer 'foreman_opennebula.register_plugin', :before => :finisher_hook do |_app|
-      Foreman::Plugin.register :foreman_opennebula do
-        requires_foreman '>= 3.7'
-        compute_resource ForemanOpennebula::Opennebula
-        register_global_js_file 'global'
+    initializer 'foreman_opennebula.register_plugin', :before => :finisher_hook do |app|
+      app.reloader.to_prepare do
+        Foreman::Plugin.register :foreman_opennebula do
+          requires_foreman '>= 3.14.0'
+          compute_resource ForemanOpennebula::Opennebula
+          register_global_js_file 'global'
 
-        parameter_filter Subnet, :opennebula_vnet
+          parameter_filter Subnet, :opennebula_vnet
+        end
       end
     end
 

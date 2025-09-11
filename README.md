@@ -7,9 +7,11 @@ This plugin enables managing of OpenNebula as a Compute Resource in Foreman.
 See [How_to_Install_a_Plugin](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Plugin)
 for how to install Foreman plugins
 
-1. Apply the DB migrations.
+1. Apply the database migrations.
 2. Create a compute resource.
-3. Select corresponding OpenNebula network on the Foreman Subnet configuration page.
+3. Select an OpenNebula network on the subnet configuration page.
+
+To use the console, install the websockify Python module.
 
 ## Copyright
 
