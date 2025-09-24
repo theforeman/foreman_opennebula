@@ -37,9 +37,9 @@ module ForemanOpennebula
       logger.info "removing key from compute resource #{name} "\
                   "(#{provider_friendly_name}): #{remote_key_pair}"
       opennebula_user = available_users.detect { |u| u.name == user }
-      template_hash = opennebula_user.to_hash['USER']['TEMPLATE']
-      template_hash.delete('SSH_PUBLIC_KEY')
-      template_str = template_hash.map { |k, v| "#{k}=\"#{v}\"" }.join("\n")
+      opennebula_user.delete_element('TEMPLATE/SSH_PRIVATE_KEY')
+      opennebula_user.delete_element('TEMPLATE/SSH_PUBLIC_KEY')
+      template_str = opennebula_user.template_str
       opennebula_user.update(template_str)
       KeyPair.destroy_by :compute_resource_id => id
     rescue => e
@@ -56,11 +56,13 @@ module ForemanOpennebula
     def setup_key_pair
       key = SSHKey.generate(comment: "foreman-#{id}#{Foreman.uuid}")
       opennebula_user = available_users.detect { |u| u.name == user }
-      template_hash = opennebula_user.to_hash['USER']['TEMPLATE']
-      template_hash['SSH_PUBLIC_KEY'] = key.ssh_public_key
-      template_str = template_hash.map { |k, v| "#{k}=\"#{v}\"" }.join("\n")
+      opennebula_user.add_element('TEMPLATE',
+                                  'SSH_PRIVATE_KEY' => key.private_key,
+                                  'SSH_PUBLIC_KEY' => key.ssh_public_key)
+      template_str = opennebula_user.template_str
       opennebula_user.update(template_str)
-      KeyPair.create! :name => key.comment, :compute_resource_id => id, :secret => key.private_key
+      KeyPair.create! :name => key.comment, :compute_resource_id => id,
+        :secret => key.private_key, :public => key.ssh_public_key
     rescue => e
       Foreman::Logging.exception('Failed to generate key pair', e)
       destroy_key_pair
