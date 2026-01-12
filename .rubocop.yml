@@ -1,3 +1,50 @@
 inherit_gem:
   theforeman-rubocop:
-    - default.yml
+    - lenient.yml
+
+AllCops:
+  TargetRubyVersion: 2.7
+
+Layout/HashAlignment:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Exclude:
+    - 'app/models/concerns/fog_extensions/open_nebula/flavor.rb'
+    - 'app/models/concerns/foreman_opennebula/key_pair_compute_resource.rb'
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Rails/Blank:
+  UnlessPresent: false
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false

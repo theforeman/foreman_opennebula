@@ -57,8 +57,8 @@ module ForemanOpennebula
       key = SSHKey.generate(comment: "foreman-#{id}#{Foreman.uuid}")
       opennebula_user = available_users.detect { |u| u.name == user }
       opennebula_user.add_element('TEMPLATE',
-                                  'SSH_PRIVATE_KEY' => key.private_key,
-                                  'SSH_PUBLIC_KEY' => key.ssh_public_key)
+        'SSH_PRIVATE_KEY' => key.private_key,
+        'SSH_PUBLIC_KEY'  => key.ssh_public_key)
       template_str = opennebula_user.template_str
       opennebula_user.update(template_str)
       KeyPair.create! :name => key.comment, :compute_resource_id => id,

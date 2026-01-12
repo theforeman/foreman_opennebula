@@ -54,7 +54,7 @@ module FogExtensions
           !standard_attributes.include?(name)
         end
         user_attributes.map do |name, value|
-          OpenStruct.new({:name => name, :value => value})
+          OpenStruct.new({ :name => name, :value => value })
         end
       end
 
@@ -138,7 +138,7 @@ module FogExtensions
           :cpu    => cpu,
           :vcpu   => vcpu,
           :memory => number_to_human_size(memory.to_i.megabytes),
-          :disk   => number_to_human_size(disk_size.to_i.megabytes)
+          :disk   => number_to_human_size(disk_size.to_i.megabytes),
         }
       end
     end

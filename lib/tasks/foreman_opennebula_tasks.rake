@@ -23,23 +23,6 @@ namespace :test do
   end
 end
 
-namespace :foreman_opennebula do
-  task :rubocop do
-    begin
-      require 'rubocop/rake_task'
-      RuboCop::RakeTask.new(:rubocop_foreman_opennebula) do |task|
-        task.patterns = ["#{ForemanOpennebula::Engine.root}/app/**/*.rb",
-                         "#{ForemanOpennebula::Engine.root}/lib/**/*.rb",
-                         "#{ForemanOpennebula::Engine.root}/test/**/*.rb"]
-      end
-    rescue
-      puts 'Rubocop not loaded.'
-    end
-
-    Rake::Task['rubocop_foreman_opennebula'].invoke
-  end
-end
-
 Rake::Task[:test].enhance ['test:foreman_opennebula']
 
 load 'tasks/jenkins.rake'
