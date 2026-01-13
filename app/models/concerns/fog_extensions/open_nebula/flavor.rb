@@ -11,7 +11,6 @@ module FogExtensions
         attribute :template_id
         attribute :topology
 
-        # rubocop:disable Style/StringConcatenation
         def to_s
           '' + get_cpu \
             + get_vcpu \
@@ -34,7 +33,6 @@ module FogExtensions
             + get_template_id \
             + get_topology
         end
-        # rubocop:enable Style/StringConcatenation
 
         def get_cpu_model
           return '' unless attributes[:cpu_model]

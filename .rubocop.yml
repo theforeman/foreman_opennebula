@@ -1,99 +1,50 @@
-require:
-  - rubocop-performance
-  - rubocop-rails
-  - rubocop-minitest
+inherit_gem:
+  theforeman-rubocop:
+    - lenient.yml
 
 AllCops:
   TargetRubyVersion: 2.7
-  TargetRailsVersion: 6.0
-  Exclude:
-    - 'node_modules/**/*'
-
-Layout/ArgumentAlignment:
-  EnforcedStyle: with_fixed_indentation
-  IndentationWidth: 2
 
 Layout/HashAlignment:
-  Enabled: false
-
-Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-
-Layout/LineLength:
-  Enabled: 111 # TODO: discuss and set this
-
-Rails:
-  Enabled: true
-
-Style/Alias:
-  EnforcedStyle: prefer_alias_method
-
-# Don't enforce documentation
-Style/Documentation:
-  Enabled: false
-
-# Don't enforce frozen string literals
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-# Support both ruby19 and hash_rockets
-Style/HashSyntax:
-  Enabled: false
-
-Style/RaiseArgs:
-  Enabled: false
-
-Style/FormatString:
-  EnforcedStyle: percent
-
-Style/FormatStringToken:
-  EnforcedStyle: template
-
-Style/StringConcatenation:
-  Exclude:
-    - app/models/concerns/fog_extensions/opennebula/flavor.rb
-
-Style/SymbolArray:
-  Enabled: false
-
-Style/RescueStandardError:
-  Enabled: false
-
-Style/IfUnlessModifier:
   Enabled: false
 
 Metrics:
   Enabled: false
 
 Naming/AccessorMethodName:
-  Enabled: false
+  Exclude:
+    - 'app/models/concerns/fog_extensions/open_nebula/flavor.rb'
+    - 'app/models/concerns/foreman_opennebula/key_pair_compute_resource.rb'
 
-Naming/RescuedExceptionsVariableName:
-  Enabled: false
-
-Layout/MultilineOperationIndentation:
-  Enabled: false
-
-Layout/SpaceInsideHashLiteralBraces:
-  Enabled: false
-
-Lint/UnusedBlockArgument:
+Naming/MethodParameterName:
   Enabled: false
 
 Rails/Blank:
-  Enabled: false
-
-Rails/RakeEnvironment:
-  Enabled: false
+  UnlessPresent: false
 
 Rails/DynamicFindBy:
-  Enabled: false
-
-Rails/IndexWith:
   Enabled: false
 
 Rails/InverseOf:
   Enabled: false
 
-Naming/MethodParameterName:
+Style/FormatString:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
+Style/SymbolArray:
   Enabled: false

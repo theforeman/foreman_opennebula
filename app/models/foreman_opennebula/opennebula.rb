@@ -76,7 +76,7 @@ module ForemanOpennebula
     end
 
     def create_vm(args = {})
-      vm_attrs = {:name => args[:name]}
+      vm_attrs = { :name => args[:name] }
       vm_attrs[:flavor] = flavors.get(args[:template_id])
       vm_attrs[:flavor].template_id = args[:template_id]
       vm_attrs[:flavor].cpu = args[:cpu] if args[:cpu].present?
@@ -88,9 +88,7 @@ module ForemanOpennebula
       end
 
       vm_attrs[:flavor].nic = args[:interfaces_attributes].map do |_, attrs|
-        nic = {
-          :vnet => networks.get(attrs[:vnet])
-        }
+        nic = { :vnet => networks.get(attrs[:vnet]) }
         nic[:ip] = attrs['ip'] if args['provision_method'] == 'image' && attrs['ip'].present?
         if vm_attrs[:flavor].nic_default.present?
           vm_attrs[:flavor].nic_default.each do |param, value|
@@ -101,10 +99,11 @@ module ForemanOpennebula
       end
 
       if args[:scheduler_hint_filter].present? && args[:scheduler_hint_data].present?
-        if args[:scheduler_hint_filter] == 'Cluster'
+        case args[:scheduler_hint_filter]
+        when 'Cluster'
           cluster = available_clusters.detect { |c| c.id == args[:scheduler_hint_data].to_i }
           vm_attrs[:flavor].sched_requirements = "CLUSTER_ID = #{cluster.id}"
-        elsif args[:scheduler_hint_filter] == 'Host'
+        when 'Host'
           host = available_hosts.detect { |h| h.id == args[:scheduler_hint_data].to_i }
           vm_attrs[:flavor].sched_requirements = "ID = #{host.id}"
         else
@@ -121,7 +120,7 @@ module ForemanOpennebula
           attribute[:name].present? && attribute[:_delete].empty?
         end
         vm_attrs[:flavor].user_variables = user_template_attributes.reduce({}) do |user_variables, attribute|
-          user_variables.merge({attribute[:name] => attribute[:value]})
+          user_variables.merge({ attribute[:name] => attribute[:value] })
         end
       end
 
